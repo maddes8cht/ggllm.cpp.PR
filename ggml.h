@@ -415,7 +415,7 @@ extern "C" {
                 /*.debug_flag =*/ 0,
 
 
-                // /*.padding =*/ 0,
+                /*.padding =*/ 0,
         };
     // n-dimensional tensor
     struct ggml_tensor {
