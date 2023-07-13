@@ -147,7 +147,8 @@ bool gpt_params_parse(int argc, char ** argv, gpt_params & params) {
                 invalid_param = true;
                 break;
             }
-            params.prompt = argv[i];
+            // params.prompt = argv[i];
+            params.prompt += argv[i];
         } else if (arg == "-e") {
             escape_prompt = true;
         } else if (arg == "--prompt-cache") {
@@ -578,6 +579,7 @@ void gpt_print_usage(int /*argc*/, char ** argv, const gpt_params & params) {
     fprintf(stderr, "  -t N, --threads N     number of threads to use during computation (default: %d)\n", params.n_threads);
     fprintf(stderr, "  -p PROMPT, --prompt PROMPT\n");
     fprintf(stderr, "                        prompt to start generation with (default: empty)\n");
+    fprintf(stderr, "                        you can use multiple -p to append them, also in combination with -f\n");
     fprintf(stderr, "  -S, --stopwords \",,,\" Add stopwords in addition to the usual end-of-sequence\n");
     fprintf(stderr, "                        comma separated list: -S \"\\n,Hello World,stopword\" - overwrites defaults except eos\n");
     fprintf(stderr, "                        Important: 'is' and ' is' are unique tokens in a stopword. Just as 'Hello' and ' Hello' are distinct\n");
