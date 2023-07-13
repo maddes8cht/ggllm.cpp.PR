@@ -309,8 +309,11 @@ bool gpt_params_parse(int argc, char ** argv, gpt_params & params) {
             if (params.model_alias == "falcon-ins") {
                 params.finetune_type = FINETUNE_FALCONINSTRUCT;
             } else
-            if (params.model_alias == "open-assistant") {
+            if (params.model_alias == "open-assistant") { // the current openassist using special tokens like <|prompter|> and <|assistant|>
                 params.finetune_type = FINETUNE_OPENASSISTANT;
+            } else
+            if (params.model_alias == "open-assistant-v1") { // a older non special tokens finetune using <|prompt|>
+                params.finetune_type = FINETUNE_OPENASSIST_V1;
             } else
             if (params.model_alias == "alpaca") {
                 params.finetune_type = FINETUNE_ALPACA;

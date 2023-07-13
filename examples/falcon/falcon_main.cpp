@@ -282,6 +282,29 @@ int main(int argc, char ** argv) {
                     stopwords.push_back(::falcon_tokenize(ctx, " ###", false));
                 }
                 break;
+            case FINETUNE_OPENASSIST_V1:
+                //<|prefix_begin|>You are a helpful Assistant called Falcon<|prefix_end|>
+                inp_pfx = ::falcon_tokenize(ctx, "<|prompt|>", false);
+                inp_sfx = ::falcon_tokenize(ctx, "<|endoftext|><|answer|>", false);
+                if (params.system_prompt.size() &&!params.sys_prompt_is_raw)
+                {
+                    // inp_system = ::falcon_tokenize(ctx, ">>DOMAIN<<<|prefix_begin|>"+params.system_prompt+"<|prefix_end|>", false);
+                    // inp_system = ::falcon_tokenize(ctx, "<|prefix_begin|>"+params.system_prompt+"<|prefix_end|>", false);
+                    //inp_system = ::falcon_tokenize(ctx, "<|prompter|>"+params.system_prompt+" Okay?<|endoftext|><|assistant|>Okay<|endoftext|>", false);
+                    //inp_system = ::falcon_tokenize(ctx, "<|prompter|>"+params.system_prompt+"<|endoftext|>", false);
+                    inp_system = ::falcon_tokenize(ctx, ">>SUMMARY<<"+params.system_prompt+"<|endoftext|>", false);
+                    if(!params.sys_prompt_simple)
+                    {
+                        //inp_system_baseline = ::falcon_tokenize(ctx, "<|prompter|>"+params.system_baseline_prompt+" Okay?<|endoftext|><|assistant|>Okay<|endoftext|>", false);
+                        inp_system_baseline = ::falcon_tokenize(ctx, "<|endoftext|>", false);
+                    }
+                }
+                if (params.stopwords.size() == 0)
+                {
+                    stopwords.push_back(::falcon_tokenize(ctx, "###", false));
+                    stopwords.push_back(::falcon_tokenize(ctx, " ###", false));
+                }
+                break;
             case FINETUNE_WIZARD:
                 inp_pfx = {};
                 inp_sfx = ::falcon_tokenize(ctx, "\n### Response:", false);

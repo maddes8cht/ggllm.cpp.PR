@@ -1500,6 +1500,9 @@ t_finetune_type falcon_detect_finetune(falcon_context * ctx, std::string model_p
     if (model_lower.find("wizard") != std::string::npos) {
         return FINETUNE_WIZARD;
     }
+    if (model_lower.find("oasst1") != std::string::npos) {
+        return FINETUNE_OPENASSIST_V1;
+    }
     if (model_lower.find("b-instruct") != std::string::npos) {
         return FINETUNE_FALCONINSTRUCT;
     }

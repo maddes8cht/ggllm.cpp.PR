@@ -13125,7 +13125,7 @@ static void ggml_compute_forward_rope(
 }
 
 // ggml_compute_forward_rope_back
-
+// todo: add the custom frequency/scale
 static void ggml_compute_forward_rope_back_f32(
         const struct ggml_compute_params * params,
         const struct ggml_tensor * src0,
