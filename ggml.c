@@ -19581,7 +19581,7 @@ void ggml_printTensorSample(const char *prefix, const struct ggml_tensor * tenso
      if (tensor->n_dims == 1) {
         printf("| 1: ");
         for(int i = 0; i < tensor->ne[0] && i < MAX_ELEMENTS_ROW; i++){
-            printf("%-7.3f, ",  *(float *)((char *) tensor->data + i*tensor->nb[0]));
+            printf("%-7.3f, ",  *(double *)((char *) tensor->data + i*tensor->nb[0]));
         }
         if(MAX_ELEMENTS_ROW < tensor->ne[0]) printf(", ..");
         printf("\n%s", sep);
@@ -19590,7 +19590,7 @@ void ggml_printTensorSample(const char *prefix, const struct ggml_tensor * tenso
         for(int i = 0; i < tensor->ne[0] && i < MAX_ELEMENTS_ROW; i++){
             printf("| %d: ", i+1);
             for(int j = 0; j < tensor->ne[1] && j < MAX_ELEMENTS_COL; j++){
-                printf("%-7.3f ",  *(float *)((char *) tensor->data + i*tensor->nb[0] + j*tensor->nb[1]));
+                printf("%-7.3f ",  *(double *)((char *) tensor->data + i*tensor->nb[0] + j*tensor->nb[1]));
                 if(j == MAX_ELEMENTS_COL - 1 && tensor->ne[1] > MAX_ELEMENTS_COL) printf(", ..");
             }
             printf("\n");
@@ -19603,7 +19603,7 @@ void ggml_printTensorSample(const char *prefix, const struct ggml_tensor * tenso
             for(int j = 0; j < tensor->ne[1] && j < MAX_ELEMENTS_COL; j++){
                 printf("[");
                 for(int k = 0; k < tensor->ne[2] && k < MAX_ELEMENTS_LAYER; k++){
-                    printf("%-7.3f",  *(float *)((char *) tensor->data + i*tensor->nb[0] + j*tensor->nb[1] + k*tensor->nb[2]));
+                    printf("%-7.3f",  *(double *)((char *) tensor->data + i*tensor->nb[0] + j*tensor->nb[1] + k*tensor->nb[2]));
                     if(k < tensor->ne[2] - 1 && k < MAX_ELEMENTS_LAYER - 1) 
                         printf(", ");
                 }
@@ -19625,7 +19625,7 @@ void ggml_printTensorSample(const char *prefix, const struct ggml_tensor * tenso
                 for(int j = 0; j < tensor->ne[2] && j < MAX_ELEMENTS_COL; j++){
                     printf("[");
                     for(int k = 0; k < tensor->ne[3] && k < MAX_ELEMENTS_LAYER; k++){
-                        printf("%-7.3f",  *(float *)((char *) tensor->data + batch*tensor->nb[0] + i*tensor->nb[1] + j*tensor->nb[2] + k*tensor->nb[3]));
+                        printf("%-7.3f",  *(double *)((char *) tensor->data + batch*tensor->nb[0] + i*tensor->nb[1] + j*tensor->nb[2] + k*tensor->nb[3]));
                         if(k < tensor->ne[3] - 1 && k < MAX_ELEMENTS_LAYER - 1) 
                             printf(", ");
                     }

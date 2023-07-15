@@ -1009,7 +1009,7 @@ fprintf(stderr, "+------------+-------+-------+-------+-------+---------------+-
 
         bool stopword_fulfilled = false;
         // stopwords
-        if (!embd.empty() && n_past_total > embd_inp.size()) 
+        if (!embd.empty() && n_past_total > (int)embd_inp.size()) 
         {
             for (const auto& stopword : stopwords) 
             {
