@@ -1,26 +1,32 @@
-ggllm.cpp is a ggml-based tool to run quantized Falcon Models on CPU and GPU
+ggllm.cpp is a ggml-backed tool to run quantized Falcon 7B and 40B Models on CPU and GPU
 
-For detailed (growing) examples and help check the new Wiki:   
+For growing examples and help check the new Wiki:   
 https://github.com/cmp-nct/ggllm.cpp/wiki  
 
 **Features that differentiate from llama.cpp for now:**
 - Support for Falcon 7B and 40B models (inference, quantization and perplexity tool)
-- Fully automated GPU offloading based on available and total VRAM
+- Fully automated CUDA-GPU offloading based on available and total VRAM
+- Run any Falcon Model at up to 16k context without losing sanity
+- Current Falcon inference speed on consumer GPU: up to 54+ tokens/sec for 7B and 18-25 tokens/sec for 40B 3-6 bit, roughly 38/sec and 16/sec at at 1000 tokens generated
+- Supports running Falcon 40B on a single 4090/3090 (24tk/sec, 15tk/sec), even on a 3080 with a bit of quality sacrifice
+- Finetune auto-detection and integrated syntax support (Just load OpenAssistant 7/40 add `-ins` for a chat or `-enc -p "Question"` and optional -sys "System prompt")
 - Higher efficiency in VRAM usage when using batched processing (more layers being offloaded)
 - 16 bit cuBLAs support (takes half the VRAM for those operations)
 - Improved loading screen and visualization
 - New tokenizer with regex emulation and BPE merge support
-- Finetune auto-detection and integrated syntax support (Just load OpenAssistant 7/40 add `-ins` for a chat or `-enc -p "Question"` and optional -sys "System prompt")
-- Stopwords support (-S)
-- Optimized RAM and VRAM calculation with batch processing support up to 8k
-- More command line parameter options (like disabling GPUs)
-- Current Falcon inference speed on consumer GPU: up to 54+ tokens/sec for 7B-4-5bit and 18-25 tokens/sec for 40B 3-6 bit, roughly 38/sec and 16/sec at at 1000 tokens generated
+
+- Optimized RAM and VRAM calculation with batch processing support
+- More command line selective features (like disabling GPUs, system prompt, stopwords)
+
   
 **What is missing/being worked on:**
+- priority: performance
+- web frontend example
 - Full GPU offloading of Falcon
 - Optimized quantization versions for Falcon
 - A new instruct mode
 - Large context support (4k-64k in the work)
+
 
 **Old model support**  
 If you use GGML type models (file versions 1-4) you need to place tokenizer.json into the model directory ! (example: https://huggingface.co/OpenAssistant/falcon-40b-sft-mix-1226/blob/main/tokenizer.json)  
@@ -49,10 +55,9 @@ https://huggingface.co/tiiuae/falcon-7b-instruct
 https://huggingface.co/OpenAssistant
 https://huggingface.co/OpenAssistant/falcon-7b-sft-mix-2000
 https://huggingface.co/OpenAssistant/falcon-40b-sft-mix-1226
+_The sft-mix variants appear more capable than the top variants._
 _Download the 7B or 40B Falcon version, use falcon_convert.py (latest version) in 32 bit mode, then falcon_quantize to convert it to ggcc-v10_
 
-**Prompting finetuned models right:**
-https://github.com/cmp-nct/ggllm.cpp/discussions/36
 
 **Conversion of HF models and quantization:**
 1) use falcon_convert.py to produce a GGML v1 binary from HF - not recommended to be used directly
