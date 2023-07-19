@@ -51,13 +51,16 @@ https://huggingface.co/tiiuae/falcon-7b/
 https://huggingface.co/tiiuae/falcon-40b-instruct  
 https://huggingface.co/tiiuae/falcon-7b-instruct  
 
-**OpenAssistant here:**
-https://huggingface.co/OpenAssistant
-https://huggingface.co/OpenAssistant/falcon-7b-sft-mix-2000
-https://huggingface.co/OpenAssistant/falcon-40b-sft-mix-1226
-_The sft-mix variants appear more capable than the top variants._
-_Download the 7B or 40B Falcon version, use falcon_convert.py (latest version) in 32 bit mode, then falcon_quantize to convert it to ggcc-v10_
+**OpenAssistant here:**  
+https://huggingface.co/OpenAssistant  
+https://huggingface.co/OpenAssistant/falcon-7b-sft-mix-2000  
+https://huggingface.co/OpenAssistant/falcon-40b-sft-mix-1226  
+_The sft-mix variants appear more capable than the top variants._  
+_Download the 7B or 40B Falcon version, use falcon_convert.py (latest version) in 32 bit mode, then falcon_quantize to convert it to ggcc-v10_  
 
+**OpenBuddy**  
+https://huggingface.co/OpenBuddy  
+_update ggllm.cpp, download the HF directory into openbuddy-7b, then `python falcon_convert.py openbuddy-7b openbuddy-7b 1`, then `falcon_quantize.exe openbuddy-7b/ggml.... openbuddy-7b/q5_1 q5_1 8`_  
 
 **Conversion of HF models and quantization:**
 1) use falcon_convert.py to produce a GGML v1 binary from HF - not recommended to be used directly
