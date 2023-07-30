@@ -505,7 +505,7 @@ bool gpt_params_parse(int argc, char ** argv, gpt_params & params) {
         return true;
     } catch (const std::exception& e) {
         // Handle exceptions thrown by validate_params or other parts of the function
-        fprintf(stderr, "\nError: %s\n\n", e.what());
+        fprintf(stderr, "\nError: Parameter '%s':\n  %s\n\n", arg.c_str(), e.what());
         fprintf(stderr, "For detailed help, use: -h or --help\n");
         return false; // Return false to indicate an error in parameter parsing
     }
