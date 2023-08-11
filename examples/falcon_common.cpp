@@ -10,6 +10,7 @@
 #include <sstream>
 #include <unordered_set>
 #include <regex>
+#include <stdexcept> // Include the header for exceptions
 
 #if defined(__APPLE__) && defined(__MACH__)
 #include <sys/types.h>
@@ -103,7 +104,6 @@ void process_escapes(std::string& input) {
     input.resize(output_idx);
 }
 
-#include <stdexcept> // Include the header for exceptions
 
 /**
  * @brief Validate the parameter for a given argument in the command-line parameters.
@@ -131,16 +131,14 @@ bool validate_params(const std::string& arg, int argc, int& i, char** argv, cons
             // Argument is optional and not present, return false
             return false;
         } else {
-            fprintf(stderr, "error: invalid parameter for argument: %s\n", arg.c_str());
-            throw std::runtime_error("Invalid parameter for argument: " + arg);
+            throw std::runtime_error("invalid parameter for argument: " + arg);
         }
     }
 
     const std::string& nextArg = argv[i];
 
-    if (nextArg.empty() || (nextArg[0] == '-' && !std::isdigit(nextArg[1]))) {
-        fprintf(stderr, "error: missing value for parameter: %s\n", arg.c_str());
-        throw std::runtime_error("Missing value for parameter: " + arg);
+    if (nextArg.empty() || (nextArg.size()) >=2 && (nextArg[0] == '-' && !std::isdigit(nextArg[1]))) {
+        throw std::runtime_error("missing value for parameter: " + arg);
     }
 
     // Validation succeeded, return true to indicate that
@@ -165,6 +163,7 @@ bool gpt_params_parse(int argc, char ** argv, gpt_params & params) {
     std::string arg;
     gpt_params default_params;
     const std::string arg_prefix = "--";
+    int i;  // declare loop variable to make it available in catch block
 
     #if defined(GGML_USE_CUBLAS)
         ggml_cuda_set_max_gpus(LLAMA_MAX_DEVICES); // default
@@ -176,8 +175,7 @@ bool gpt_params_parse(int argc, char ** argv, gpt_params & params) {
     params.seed = (int) time(NULL); // initiate a seed - we need one if multiple context used with similar input
 
     try {
-
-        for (int i = 1; i < argc; i++) {
+        for ( i = 1; i < argc; i++) {
             arg = argv[i];
             if (arg.compare(0, arg_prefix.size(), arg_prefix) == 0) {
                 std::replace(arg.begin(), arg.end(), '_', '-');
@@ -503,9 +501,15 @@ bool gpt_params_parse(int argc, char ** argv, gpt_params & params) {
             }
     
         return true;
+    } catch (const std::invalid_argument& e) {
+        // Handle exceptions thrown by std:: converter functions
+        fprintf(stderr, "\nError: invalid argument for parameter: '%s':\n  %s: '%s'\n\n", arg.c_str(), e.what(), argv[i]);
+        //fprintf(stderr, "  invalid argument: '%s'\n\n", argv[i]);
+        fprintf(stderr, "For detailed help, use: -h or --help\n");
+        return false; // Return false to indicate an error in parameter parsing
     } catch (const std::exception& e) {
         // Handle exceptions thrown by validate_params or other parts of the function
-        fprintf(stderr, "\nError: Parameter '%s':\n  %s\n\n", arg.c_str(), e.what());
+        fprintf(stderr, "\nError: Argument '%s':\n  %s\n\n", arg.c_str(), e.what());
         fprintf(stderr, "For detailed help, use: -h or --help\n");
         return false; // Return false to indicate an error in parameter parsing
     }
